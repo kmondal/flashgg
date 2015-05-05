@@ -7,4 +7,5 @@ flashggMicroAODZeeValidationSequence = cms.Sequence(flashggMicroAODSequence)
 flashggMicroAODZeeValidationSequence.remove(flashggElectrons)
 flashggMicroAODZeeValidationSequence.remove(flashggPreselectedDiPhotons)
 flashggMicroAODZeeValidationSequence.remove(flashggJets)
+flashggMicroAODZeeValidationSequence.remove(flashggMicroAODGenSequence)
 flashggMicroAODZeeValidationSequence += flashggZeeDiPhotons

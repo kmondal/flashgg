@@ -12,7 +12,7 @@ flashggZeeDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                     && (leadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * leadingPhoton.pt < 4.0) 
                                     && (leadingPhoton.trkSumPtHollowConeDR03 - 0.002 * leadingPhoton.pt < 4.0) 
                                     && (leadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    && (leadingPhoton.passElectronVeto)
+                                    && (!leadingPhoton.passElectronVeto)
                                     && (leadPhotonId>-0.1)
                                     ))
                                || (leadingPhoton.r9 > 0.9 
@@ -21,7 +21,7 @@ flashggZeeDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                     && (leadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * leadingPhoton.pt < 50.0) 
                                     && (leadingPhoton.trkSumPtHollowConeDR03 - 0.002 * leadingPhoton.pt < 50.0) 
                                     && (leadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    && (leadingPhoton.passElectronVeto)
+                                    && (!leadingPhoton.passElectronVeto)
                                     && (leadPhotonId>-0.1)
                                     )) 
                              ) && ( 
@@ -31,7 +31,7 @@ flashggZeeDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                     && (subLeadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * subLeadingPhoton.pt < 4.0) 
                                     && (subLeadingPhoton.trkSumPtHollowConeDR03 - 0.002 * subLeadingPhoton.pt < 4.0) 
                                     && (subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    && (subLeadingPhoton.passElectronVeto)
+                                    && (!subLeadingPhoton.passElectronVeto)
                                     && (subLeadPhotonId>-0.1)
                                     )) 
                                || (subLeadingPhoton.r9 > 0.9 
@@ -40,7 +40,7 @@ flashggZeeDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                     && (subLeadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * subLeadingPhoton.pt < 50.0) 
                                     && (subLeadingPhoton.trkSumPtHollowConeDR03 - 0.002 * subLeadingPhoton.pt < 50.0) 
                                     && (subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    && (subLeadingPhoton.passElectronVeto)
+                                    && (!subLeadingPhoton.passElectronVeto)
                                     && (subLeadPhotonId>-0.1)
                                     )) 
                              ) 
