@@ -10,16 +10,17 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+process.GlobalTag.globaltag = 'GR_R_74_V8::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
-process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:/afs/cern.ch/work/k/kmondal/public/FLASHgg/CMSSW_7_4_0_pre9/src/flashgg/MicroAOD/test/MyZeeMicroAODOutputFile.root",)
+process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:/afs/cern.ch/work/k/kmondal/public/FLASHgg/CMSSW_7_4_0_pre9/src/flashgg/MicroAOD/test/2012/ZeeMicroAODOutputFile2012.root",)
 )
 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 process.load("flashgg.Taggers.diphotoMVAWithZeeDumper_cff")
 process.load("flashgg.Taggers.photonDumper_cfi")
+
 process.load("flashgg.Taggers.diphotonDumper_cfi")
 process.diphotonDumper.src = cms.InputTag("flashggZeeDiPhotons")
 process.diphotonDumperAll.src = cms.InputTag("flashggZeeDiPhotons")
@@ -156,32 +157,6 @@ cfgTools.addCategories(process.diphotonDumper,
                        )
 
 process.diphotonDumper.nameTemplate ="zeevalidation_$SQRTS_$LABEL_$SUBCAT"
-
-#Handle<reco::BeamSpot> recoBeamSpotHandle;
-#                iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
-#                float beamsig;
-#                if (recoBeamSpotHandle.isValid()){
-#                        beamsig = recoBeamSpotHandle->sigmaZ();
-#                } else {
-#                        beamsig = -9999; // I hope this never happens!"
-#                }
-#
-#                float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z());
-#                float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
-#                float cos_term = TMath::Cos(g1->phi()-g2->phi());
-#                float sech1 = 1.0/TMath::CosH(g1->eta());
-#                float sech2 = 1.0/TMath::CosH(g2->eta());
-#                float tanh1 = 1.0/TMath::TanH(g1->phi());
-#                float tanh2 = 1.0/TMath::TanH(g2->phi());
-#                float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
-#                float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
-#                float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
-#                float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
-#                float alpha_sig = 0.5*angleResolution;
-#                float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
-#                float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
-#
-
 
 from flashgg.MetaData.JobConfig import customize
 customize.setDefault("maxEvents",-1)
