@@ -84,12 +84,14 @@ namespace flashgg {
                     new_obj->getLeadingPhoton().full5x5_setShowerShapeVariables(newShowerShapes);
                     leadCorrectedEtaWidth = corrections_[1]->Eval(new_obj->getLeadingPhoton().superCluster()->etaWidth());
                     new_obj->getLeadingPhoton().getSuperCluster()->setEtaWidth(leadCorrectedEtaWidth);
-                    std::cout << "S4 uncorrected" << new_obj->getLeadingPhoton().s4() << std::endl;
+                    //std::cout << "S4 uncorrected" << new_obj->getLeadingPhoton().s4() << std::endl;
+                    //std::cout << "s4 actual after correction"  << corrections_[2]->Eval(new_obj->getLeadingPhoton().s4()) << std::endl; 
                     new_obj->getLeadingPhoton().setS4(corrections_[2]->Eval(new_obj->getLeadingPhoton().s4()));
-                    std::cout << "S4 corrected" << new_obj->getLeadingPhoton().s4() << std::endl;
-                    std::cout << "SigmaEoE uncorrected" << new_obj->getLeadingPhoton().sigEOverE() << std::endl;
+                    //std::cout << "S4 corrected" << new_obj->getLeadingPhoton().s4() << std::endl;
+                    //std::cout << "SigmaEoE uncorrected" << new_obj->getLeadingPhoton().sigEOverE() << std::endl;
+                    //std::cout << "SigmaEOverE actual correction" << corrections_[6]->Eval(new_obj->getLeadingPhoton().sigEOverE()) << std::endl;
                     new_obj->getLeadingPhoton().setSigEOverE(corrections_[6]->Eval(new_obj->getLeadingPhoton().sigEOverE()));
-                    std::cout << "SigmaEoE corrected" << new_obj->getLeadingPhoton().sigEOverE() << std::endl;
+                    //std::cout << "SigmaEoE corrected" << new_obj->getLeadingPhoton().sigEOverE() << std::endl;
 
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
