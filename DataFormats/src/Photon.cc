@@ -301,9 +301,9 @@ void Photon::smearSigmaEOverEValueBy( float val ) {
 
 void Photon::setSigEOverE( float val ) {
     const LorentzVector pho_p4 = p4(regression_type);
-    float energyError = getCorrectedEnergyError(regression_type);
+    //float energyError = getCorrectedEnergyError(regression_type);
     float energy = getCorrectedEnergy(regression_type);
-    energyError = energy*val;
+    float energyError = energy*val;
     setP4(regression_type, pho_p4, energyError, false);
 }
     
