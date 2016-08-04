@@ -17,7 +17,7 @@ customize.setDefault("targetLumi",2.6e+4)
 customize.parse()
 
 if ("data_single" in customize.processId):
-    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
+    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele35_WPLoose_Gsf_v*")
 #    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele22_eta2p1_WPLoose_Gsf_v*")
 #elif ("data_double" in customize.processId):
 #    process.hltFilter.HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*")
@@ -66,8 +66,8 @@ process.DiPhotonWithZeeMVADumper.globalVariables = process.globalVariables
 #process.load("flashgg.Taggers.photonDumper_cfi")
 
 process.load("flashgg.Taggers.diphotonDumper_cfi") 
-process.diphotonDumper.src = cms.InputTag("flashggDiPhotonSystematics")
-#process.diphotonDumper.src = cms.InputTag("flashggUpdatedIdMVADiPhotons")
+#process.diphotonDumper.src = cms.InputTag("flashggDiPhotonSystematics")
+process.diphotonDumper.src = cms.InputTag("flashggUpdatedIdMVADiPhotons")
 #process.diphotonDumper.src = cms.InputTag("flashggDiPhotons")
 process.diphotonDumper.dumpHistos = False
 process.diphotonDumper.dumpTrees  =  True
@@ -95,7 +95,7 @@ cfgTools.addCategories(process.diphotonDumper,
                        [("All",
 """
 (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5 && leadingPhoton.hasPixelSeed()==1) &&
-                                        (leadingPhoton.pt > 33) &&
+                                        (leadingPhoton.pt > 40) &&
                                         (leadingPhoton.hadronicOverEm < 0.1) &&
                                         ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
                                         ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
@@ -128,8 +128,10 @@ cfgTools.addCategories(process.diphotonDumper,
                         ],
                        variables=["leadPhIso        := leadingPhoton.pfPhoIso03()",
                                   "leadNeuIso       := leadingPhoton.pfNeutIso03()",
-                                  "leadsieie        := leadingPhoton.full5x5_sigmaIetaIeta",
+                                  "leadfull5x5sieie := leadingPhoton.full5x5_sigmaIetaIeta",
+                                  "leadsieie        := leadingPhoton.sigmaIetaIeta",
                                   "leadcovieip      := leadingPhoton.sieip",
+                                  "leadcovipip      := leadingPhoton.sipip",
                                   "leadetawidth     := leadingPhoton.superCluster.etaWidth",
                                   "leadphiwidth     := leadingPhoton.superCluster.phiWidth",
                                   "leads4ratio      := leadingPhoton.s4",
@@ -143,8 +145,10 @@ cfgTools.addCategories(process.diphotonDumper,
                                   "leadESSigma      := leadingPhoton.esEffSigmaRR",
                                   "subleadPhIso     := subLeadingPhoton.pfPhoIso03()",
                                   "subLeadNeuIso    := subLeadingPhoton.pfNeutIso03()",
-                                  "subleadsieie     := subLeadingPhoton.full5x5_sigmaIetaIeta",
+                                  "subleadfull5x5sieie := subLeadingPhoton.full5x5_sigmaIetaIeta",
+                                  "subleadsieie     := subLeadingPhoton.sigmaIetaIeta",
                                   "subleadcovieip   := subLeadingPhoton.sieip",
+                                  "subleadcovipip   := subLeadingPhoton.sipip",
                                   "subleadetawidth  := subLeadingPhoton.superCluster.etaWidth",
                                   "subleadphiwidth  := subLeadingPhoton.superCluster.phiWidth",
                                   "subleads4ratio   := subLeadingPhoton.s4",
@@ -182,15 +186,17 @@ from flashgg.Systematics.SystematicsCustomize import *
 #customize.processId = 'Data' # for test
 
 ## apply shower shape corrections
-doUpdatedIdMVADiPhotons = False # set to True for 76X (for 80X shower shape corrections not yet available)
+#doUpdatedIdMVADiPhotons = True # set to True for 80X correction to be included
 
 ## load syst producer
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
 
-if (doUpdatedIdMVADiPhotons):
-    process.flashggDiPhotonSystematics.src = "flashggUpdatedIdMVADiPhotons"
-else:
-    process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
+#if (doUpdatedIdMVADiPhotons):
+#    process.flashggDiPhotonSystematics.src = "flashggUpdatedIdMVADiPhotons"
+#else:
+#    process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
+process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
+
 print "input to flashggDiPhotonSystematics = ", process.flashggDiPhotonSystematics.src
 
 ## Or use the official  tool instead  ????????????????
@@ -227,8 +233,10 @@ else:
 ############################
 
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
+process.flashggUpdatedIdMVADiPhotons.src = cms.InputTag("flashggDiPhotonSystematics")
+
 #process.p = cms.Path(process.dataRequirements*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)*process.flashggDiPhotonSystematics
-process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.flashggDiPhotonSystematics*process.dataRequirements*process.diphotonDumper)
+process.p = cms.Path(process.flashggDiPhotonSystematics*process.flashggUpdatedIdMVADiPhotons*process.dataRequirements*process.diphotonDumper)
 #process.p = cms.Path(process.dataRequirements*process.diphotonDumper)
 
 
