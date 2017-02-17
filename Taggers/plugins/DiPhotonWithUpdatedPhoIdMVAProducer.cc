@@ -35,8 +35,12 @@ namespace flashgg {
         //        std::vector<TGraph*> corrections_;
         std::vector<std::unique_ptr<TGraph> > corrections_;
 
+        // For NonFull5x5 variables transformation
         bool doNon5x5transformation_;
         std::vector<std::unique_ptr<TGraph> > non5x5corrections_;
+        
+        // For Photon Isolation Correction
+        bool doPFPhoIsoCorr_;
 
         bool useNewPhoId_;
 
@@ -78,7 +82,7 @@ namespace flashgg {
             f->Close();
         }
 
-        doNon5x5transformation_ =ps.getParameter<bool>( "doNon5x5transformation" );
+        doNon5x5transformation_ = ps.getParameter<bool>( "doNon5x5transformation" );
         if (doNon5x5transformation_) {
             non5x5correctionFile_ = ps.getParameter<edm::FileInPath>( "non5x5correctionFile" );
             TFile* non5x5_f = TFile::Open(non5x5correctionFile_.fullPath().c_str());
@@ -92,6 +96,8 @@ namespace flashgg {
             non5x5corrections_.emplace_back((TGraph*)((TGraph*) non5x5_f->Get("transfsieipEE"))->Clone() );
             non5x5_f->Close();
         }
+        
+        doPFPhoIsoCorr_ = ps.getParameter<bool>( "doPFPhoIsoCorr" ); 
 
         produces<std::vector<flashgg::DiPhotonCandidate> >();
     }
@@ -225,6 +231,20 @@ namespace flashgg {
                     new_obj->getSubLeadingPhoton().setSipip(corrections_[5]->Eval(new_obj->getSubLeadingPhoton().sipip()));
                     new_obj->getSubLeadingPhoton().setSieip(corrections_[7]->Eval(new_obj->getSubLeadingPhoton().sieip()));
                 }
+            }
+
+            // Correction for Photon Isolation
+            if (this->debug_) {
+                std::cout << "pfPhoIso03 before correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
+            }
+
+            if (doPFPhoIsoCorr_) {
+                new_obj->getLeadingPhoton().setpfPhoIso03(0.0);
+                new_obj->getSubLeadingPhoton().setpfPhoIso03(0.0);
+            }
+
+            if (this->debug_) {
+                std::cout << "pfPhoIso03 after correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
             }
 
             if (this->debug_) {

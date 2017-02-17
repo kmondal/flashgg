@@ -29,6 +29,8 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.
                                               doNon5x5transformation   = cms.bool(False),
                                               non5x5correctionFile     = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_non5x5_v1.root"),
+                                              # To apply pfPhoIso03 correction
+                                              doPFPhoIsoCorr           = cms.bool(True),
 
                                               Debug                    = cms.bool(False)
                                               )
