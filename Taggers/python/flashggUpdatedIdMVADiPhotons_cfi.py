@@ -24,13 +24,18 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml"),
                                               photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml"),
 
-                                              # commenting out this parameter will disable all corrections performed by this module
+                                              # To apply shower shape correction for full5x5R9, full5x5sieie, eta width and S4 ratio
+                                              doShowerShapeCorrection  = cms.bool(False),
                                               correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_AfterPreApr_v1.root"),
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.
                                               doNon5x5transformation   = cms.bool(False),
                                               non5x5correctionFile     = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_non5x5_v1.root"),
+                                              # To set pfPhoIso to zero for both data and MC
+                                              PFPhoIsoSetZero          = cms.bool(False),
+                                              
                                               # To apply pfPhoIso03 correction
-                                              doPFPhoIsoCorr           = cms.bool(True),
+                                              doPFPhoIsoCorr           = cms.bool(False),
+                                              isocorrectionFile        = cms.FileInPath("flashgg/MicroAOD/data/transformation_PhoIso.root"),
 
                                               Debug                    = cms.bool(False)
                                               )

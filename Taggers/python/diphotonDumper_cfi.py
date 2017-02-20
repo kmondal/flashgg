@@ -5,5 +5,8 @@ from flashgg.Taggers.diphotonDumpConfig_cff import diphotonDumpConfig
 diphotonDumper = cms.EDAnalyzer('CutBasedDiPhotonDumper',
                                 **diphotonDumpConfig.parameters_()
                                 )
+diphotonDumperBeforeCorr = cms.EDAnalyzer('CutBasedDiPhotonDumper',
+                                **diphotonDumpConfig.parameters_()
+                                )
 
 

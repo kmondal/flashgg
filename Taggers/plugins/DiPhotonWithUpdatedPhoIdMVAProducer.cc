@@ -12,6 +12,8 @@
 
 #include "TFile.h"
 #include "TGraph.h"
+#include "TRandom.h"
+#include "TF1.h"
 
 using namespace std;
 using namespace edm;
@@ -29,26 +31,30 @@ namespace flashgg {
         edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > token_;
         edm::EDGetTokenT<double> rhoToken_;
         PhotonIdUtils phoTools_;
-        edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_, non5x5correctionFile_;
-        bool correctInputs_;
+        edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_, non5x5correctionFile_, isocorrectionFile_;
+        bool doShowerShapeCorrection_;
         bool debug_;
         //        std::vector<TGraph*> corrections_;
         std::vector<std::unique_ptr<TGraph> > corrections_;
-
+        
         // For NonFull5x5 variables transformation
         bool doNon5x5transformation_;
         std::vector<std::unique_ptr<TGraph> > non5x5corrections_;
+
+        // For Photon Isolation set to Zero for both data and MC
+        bool PFPhoIsoSetZero_;
         
         // For Photon Isolation Correction
         bool doPFPhoIsoCorr_;
-
+        std::vector<std::unique_ptr<TGraph> > isocorrections_;
+        
         bool useNewPhoId_;
-
+        
         EffectiveAreas _effectiveAreas;
         vector<double> _phoIsoPtScalingCoeff;
         double _phoIsoCutoff;
     };
-
+    
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
         token_(consumes<edm::View<flashgg::DiPhotonCandidate> >(ps.getParameter<edm::InputTag>("src"))),
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
@@ -67,8 +73,8 @@ namespace flashgg {
         }
         phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_ );
 
-        correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
-        if (correctInputs_) {
+        doShowerShapeCorrection_ = ps.getParameter<bool>( "doShowerShapeCorrection" );
+        if (doShowerShapeCorrection_) {
             correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
             TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
             corrections_.emplace_back((TGraph*)((TGraph*) f->Get("transffull5x5R9EB"))->Clone() );
@@ -97,7 +103,16 @@ namespace flashgg {
             non5x5_f->Close();
         }
         
+        PFPhoIsoSetZero_ = ps.getParameter<bool>( "PFPhoIsoSetZero" );
+
         doPFPhoIsoCorr_ = ps.getParameter<bool>( "doPFPhoIsoCorr" ); 
+        if (doPFPhoIsoCorr_) {
+            isocorrectionFile_ = ps.getParameter<edm::FileInPath>( "isocorrectionFile" );
+            TFile* isoCor_f = TFile::Open(isocorrectionFile_.fullPath().c_str());
+            isocorrections_.emplace_back((TGraph*)((TGraph*) isoCor_f->Get("transfPhoIsoEB"))->Clone());
+            isocorrections_.emplace_back((TGraph*)((TGraph*) isoCor_f->Get("transfPhoIsoEE"))->Clone());
+            isoCor_f->Close();
+        }
 
         produces<std::vector<flashgg::DiPhotonCandidate> >();
     }
@@ -117,7 +132,11 @@ namespace flashgg {
             flashgg::DiPhotonCandidate *new_obj = obj.clone();
             new_obj->makePhotonsPersistent();
             double leadCorrectedEtaWidth = 0., subLeadCorrectedEtaWidth = 0.;
-            if (not evt.isRealData() and correctInputs_) { 
+            if (PFPhoIsoSetZero_) {
+                new_obj->getLeadingPhoton().setpfPhoIso03(0.0);
+                new_obj->getSubLeadingPhoton().setpfPhoIso03(0.0);
+            }
+            if (not evt.isRealData() and doShowerShapeCorrection_) { 
                 if (new_obj->getLeadingPhoton().isEB()) {
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
@@ -232,21 +251,34 @@ namespace flashgg {
                     new_obj->getSubLeadingPhoton().setSieip(corrections_[7]->Eval(new_obj->getSubLeadingPhoton().sieip()));
                 }
             }
-
+            
             // Correction for Photon Isolation
-            if (this->debug_) {
-                std::cout << "pfPhoIso03 before correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
-            }
 
             if (doPFPhoIsoCorr_) {
-                new_obj->getLeadingPhoton().setpfPhoIso03(0.0);
-                new_obj->getSubLeadingPhoton().setpfPhoIso03(0.0);
+                if (this->debug_) {
+                    std::cout << "pfPhoIso03 before correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
+                }
+                if (new_obj->getLeadingPhoton().pfPhoIso03() > 0.000001) {
+                    // TF1* f1 = new TF1("f1", "exp(-x)", 0.5, 5);
+                    if (new_obj->getLeadingPhoton().isEB())
+                        new_obj->getLeadingPhoton().setpfPhoIso03(isocorrections_[0]->Eval(new_obj->getLeadingPhoton().pfPhoIso03()));
+                    else if (new_obj->getLeadingPhoton().isEE())
+                        new_obj->getLeadingPhoton().setpfPhoIso03(isocorrections_[1]->Eval(new_obj->getLeadingPhoton().pfPhoIso03()));
+                }
+                if (new_obj->getSubLeadingPhoton().pfPhoIso03() > 0.000001) {
+                    // TF1* f2 = new TF1("f2", "exp(-x)", 0.5, 5);
+                    if (new_obj->getSubLeadingPhoton().isEB())
+                        new_obj->getSubLeadingPhoton().setpfPhoIso03(isocorrections_[0]->Eval(new_obj->getSubLeadingPhoton().pfPhoIso03()));
+                    else if (new_obj->getSubLeadingPhoton().isEE())
+                        new_obj->getSubLeadingPhoton().setpfPhoIso03(isocorrections_[1]->Eval(new_obj->getSubLeadingPhoton().pfPhoIso03()));
+                }
+                if (this->debug_) {
+                    std::cout << "pfPhoIso03 after correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
+                }
             }
-
-            if (this->debug_) {
-                std::cout << "pfPhoIso03 after correction for lead (sublead)" << new_obj->getLeadingPhoton().pfPhoIso03() << "(" << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl; 
-            }
-
+            
+            
+            // Compute corrected photon MVA value
             if (this->debug_) {
                 std::cout << " Input DiPhoton lead (sublead) MVA: " << obj.leadPhotonId() << " " << obj.subLeadPhotonId() << std::endl;
             }
