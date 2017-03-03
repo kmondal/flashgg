@@ -252,11 +252,22 @@ namespace flashgg {
                 }
             }
 
+            double eA_leadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getLeadingPhoton().superCluster()->eta()) );
+            double eA_subLeadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getSubLeadingPhoton().superCluster()->eta()) );
+
+            // To save the corrected pfPhoIso value 
+            float leadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
+            new_obj->getLeadingPhoton().setpfPhoIso03Corr(leadpfPhoIso03Corr);
+            float subleadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getSubLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
+            new_obj->getSubLeadingPhoton().setpfPhoIso03Corr(subleadpfPhoIso03Corr);
+            if (this->debug_) {
+                std::cout << "Isolation notcorr (corr) for lead, sublead" << new_obj->getLeadingPhoton().pfPhoIso03() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03() << "(" << new_obj->getLeadingPhoton().pfPhoIso03Corr() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03Corr() << ")" << std::endl;
+            }                                   
+            
+            // To evaluate IDMVA value for corrected pfPhoIso
             if (this->debug_) {
                 std::cout << " Input DiPhoton lead (sublead) MVA: " << obj.leadPhotonId() << " " << obj.subLeadPhotonId() << std::endl;
             }
-            double eA_leadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getLeadingPhoton().superCluster()->eta()) );
-            double eA_subLeadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getSubLeadingPhoton().superCluster()->eta()) );
             
             float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, leadCorrectedEtaWidth, eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             new_obj->getLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newleadmva);
