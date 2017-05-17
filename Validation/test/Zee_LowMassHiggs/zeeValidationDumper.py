@@ -69,7 +69,7 @@ process.flashggPreselectedDiPhotonsLowMass.src = cms.InputTag("flashggDiPhotonSy
 
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
 process.flashggUpdatedIdMVADiPhotons.correctionFile = cms.FileInPath('flashgg/MicroAOD/data/transformation_lowmass_May9_2017_v1.root')
-
+process.flashggUpdatedIdMVADiPhotons.non5x5correctionFile = cms.FileInPath('flashgg/MicroAOD/data/transformation_Moriond17_non5x5_lowmass.root')
 process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
 process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag("flashggPreselectedDiPhotonsLowMass")
 
