@@ -131,10 +131,16 @@ class JobConfig(object):
             from SimGeneral.MixingModule.mix_2016_25ns_Moriond17MC_PoissonOOTPU_cfi import mix as mix_Moriond17
             self.pu_distribs["Summer16"] = mix_Moriond17.input.nbPileupEvents
             self.pu_distribs["PUMoriond17"] = mix_Moriond17.input.nbPileupEvents
-            self.pu_distribs["upgrade2017"] = mix_Moriond17.input.nbPileupEvents
         except Exception:
             print "Failed to load Moriond17 mixing, this is expected in earlier releases"
 
+        try:
+            from SimGeneral.MixingModule.mix_Flat_10_50_25ns_cfi import mix as mix_Spring17
+            mix_Spring17.input.nbPileupEvents.probFunctionVariable = cms.vint32(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62)
+            mix_Spring17.input.nbPileupEvents.probValue = cms.vdouble(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571,0.028571)
+            self.pu_distribs["RunIISpring17"] = mix_Spring17.input.nbPileupEvents
+        except Exception:
+            print "Failed to load Spring17 PhaseIUpgrade17 mixing"
             
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
