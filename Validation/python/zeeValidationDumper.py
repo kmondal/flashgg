@@ -37,6 +37,7 @@ if ("data" in customize.processId):
     process.GlobalTag.globaltag = '92X_dataRun2_Prompt_v8'
 else:
     process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v10'
+    #process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v6'
 
 print "GlobalTag : ", process.GlobalTag.globaltag
 
@@ -56,15 +57,17 @@ if ("data" in customize.processId):
 
 process.load("flashgg.Taggers.flashggPreselectedDiPhotons_cfi")
 process.flashggPreselectedDiPhotons.variables[-1] = "-(passElectronVeto-1)"
-process.flashggPreselectedDiPhotons.src = cms.InputTag("flashggDiPhotons")
+#process.flashggPreselectedDiPhotons.src = cms.InputTag("flashggDiPhotons")
+process.flashggPreselectedDiPhotons.src = cms.InputTag("flashggUpdatedIdMVADiPhotons")
 
 #process.load("flashgg.Taggers.flashggPreselectedDiPhotonsLowMass_cfi")
 #process.flashggPreselectedDiPhotonsLowMass.variables[-1] = "(1-hasPixelSeed)"
 #process.flashggPreselectedDiPhotonsLowMass.src = cms.InputTag("flashggDiPhotonSystematics")
 
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
-process.flashggUpdatedIdMVADiPhotons.doIsoCorrection = cms.bool(False)
+process.flashggUpdatedIdMVADiPhotons.do5x5correction = cms.bool(False)
 process.flashggUpdatedIdMVADiPhotons.doNon5x5transformation = cms.bool(False)
+process.flashggUpdatedIdMVADiPhotons.doIsoCorrection = cms.bool(False)
 
 process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
 process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag("flashggPreselectedDiPhotons")
@@ -234,6 +237,6 @@ else:
 ############################
 
 #process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.dataRequirements*process.flashggDiPhotonSystematics*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
-process.p = cms.Path(process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
+process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
 
 customize(process)

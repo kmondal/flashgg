@@ -23,13 +23,11 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               phoIsoPtScalingCoeff = cms.vdouble(0.0053,0.0034),
                                               phoIsoCutoff = cms.double(2.5),
 
-                                              photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml"),
-                                              photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml"),
+                                              photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_92X_barrel_BDT.weights.xml"),
+                                              photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_92X_endcap_BDT.weights.xml"),
 
-                                              # commenting out this parameter will disable all corrections performed by this module
-
-                                              #correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_80X_v4.root"),
-                                              # correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_v2.root"),
+                                              # To apply normal 5x5 shower shape corrections
+                                              do5x5correction          = cms.bool(True),
                                               correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_AfterPreApr_v1.root"),
 
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.

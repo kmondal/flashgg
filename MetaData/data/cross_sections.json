@@ -163,8 +163,9 @@
 	"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"        : {"xs" : 489.0, "br" : 1.0 },
 	"ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8"             : {"xs" : 3.38, "br" : 1.0},
 	"WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8"             : {"xs" : 5.52, "br" : 1.0},
-	"WW_TuneCUETP8M1_13TeV-pythia8"                           : {"xs" : 63.21, "br" : 1.0}
-
+	"WW_TuneCUETP8M1_13TeV-pythia8"                           : {"xs" : 63.21, "br" : 1.0},
+	
+	"GJet_DoubleEMEnriched_13TeV_pythia8"                     : {"xs" : 220.0, "br" : 1.0, "kf" : 1.0, "itype":1}
 
 
 }

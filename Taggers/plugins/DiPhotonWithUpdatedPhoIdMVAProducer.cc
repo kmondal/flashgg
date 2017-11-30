@@ -42,9 +42,9 @@ namespace flashgg {
         edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_, non5x5correctionFile_;
         shared_ptr<ModifyObjectValueBase> regress_;
         bool reRunRegression_, reRunRegressionOnData_;
-        bool correctInputs_;
         bool debug_;
         //        std::vector<TGraph*> corrections_;
+        bool correctInputs_;
         std::vector<std::unique_ptr<TGraph> > corrections_;
 
         bool doNon5x5transformation_;
@@ -66,6 +66,8 @@ namespace flashgg {
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
         regress_(0),
         debug_( ps.getParameter<bool>( "Debug" ) ),
+        correctInputs_(ps.getParameter<bool>("do5x5correction")),
+        doNon5x5transformation_(ps.getParameter<bool>("doNon5x5transformation")),
         _effectiveAreas((ps.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
         _phoIsoPtScalingCoeff(ps.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
         _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff")),
@@ -85,7 +87,7 @@ namespace flashgg {
         }
         phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_ );
 
-        correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
+        correctInputs_ = ps.getParameter<bool>("do5x5correction");
         if (correctInputs_) {
             correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
             TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
@@ -100,7 +102,7 @@ namespace flashgg {
             f->Close();
         }
 
-        doNon5x5transformation_ =ps.getParameter<bool>( "doNon5x5transformation" );
+        doNon5x5transformation_ = ps.getParameter<bool>( "doNon5x5transformation" );
         if (doNon5x5transformation_) {
             non5x5correctionFile_ = ps.getParameter<edm::FileInPath>( "non5x5correctionFile" );
             TFile* non5x5_f = TFile::Open(non5x5correctionFile_.fullPath().c_str());
