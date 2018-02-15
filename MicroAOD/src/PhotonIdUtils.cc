@@ -276,13 +276,14 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
     double phoIsoPtScalingCoeffVal = 0;
     if( photon.isEB() ) 
-    phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
     else
-        phoIsoPtScalingCoeffVal =  _phoIsoPtScalingCoeff.at(1); //endcap case
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(1); //endcap case
     
     double phoIsoCorr = photon.pfPhoIso03() - eA*(rho) - phoIsoPtScalingCoeffVal*photon.pt();
     
-    phoIdMva_pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    // phoIdMva_pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    phoIdMva_pfPhoIso03Corr_ = phoIsoCorr;
     
     phoIdMva_pfChgIso03_      = photon.pfChgIso03WrtVtx( vtx );
     phoIdMva_pfChgIso03worst_ = photon.pfChgIsoWrtWorstVtx03();
@@ -314,9 +315,11 @@ float PhotonIdUtils::computeCorrectPhoIso(
     
     double phoIsoCorr = photon.pfPhoIso03() - eA*(rho) - phoIsoPtScalingCoeffVal*photon.pt();
     
-    pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    // pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    pfPhoIso03Corr_ = phoIsoCorr;
     
     float pfPhoIso03Corr = pfPhoIso03Corr_;
+
     return pfPhoIso03Corr;
 }
 
