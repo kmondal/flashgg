@@ -58,18 +58,17 @@ if (isMC):
     myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-2_7_7-2_7_7-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180117_115847/0000/myMicroAODOutputFile_10.root")
 
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*") #HLT_Ele32_WPTight_Gsf_L1DoubleEG_v* for 2017
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*") #HLT_Ele32_WPTight_Gsf_L1DoubleEG_v* for 2017 #HLT_Ele27_WPTight_Gsf_v* for Moriond17
     myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter","hltEGL1SingleEGOrFilter") 
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
     myoptions['GLOBALTAG']             = '94X_mc2017_realistic_v10'
     myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 else:
-    #myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_1.root")
-    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-07Aug2017-2_6_1/2_6_1/SingleElectron/LegacyReReco-07Aug2017-2_6_1-2_6_1-v0-Run2016C-07Aug17-v1/171008_210948/0000/myMicroAODOutputFile_10.root")
+    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/SingleElectron/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_113753/0000/myMicroAODOutputFile_1.root")
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele35_WPTight_Gsf_v*")
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle35noerWPTightGsfTrackIsoFilter")
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter","hltEGL1SingleEGOrFilter")
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
     myoptions['GLOBALTAG']             = '94X_dataRun2_ReReco_EOY17_v2'
