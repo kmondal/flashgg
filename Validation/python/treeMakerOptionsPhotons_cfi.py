@@ -74,7 +74,7 @@ def setModules(process, options):
                                                filterNames = options['TnPHLTTagFilters'],
                                                inputs      = cms.InputTag("goodPhotonTagsIDMVA"),
                                                bits        = cms.InputTag('TriggerResults::HLT'),
-                                               objects     = cms.InputTag('selectedPatTrigger'),
+                                               objects     = cms.InputTag('slimmedPatTrigger'),
                                                dR          = cms.double(0.3),
                                                isAND       = cms.bool(True)
                                                )
@@ -83,7 +83,7 @@ def setModules(process, options):
                                                  filterNames = options['TnPHLTProbeFilters'],
                                                  inputs      = cms.InputTag("goodPhotonProbes"),
                                                  bits        = cms.InputTag('TriggerResults::HLT'),
-                                                 objects     = cms.InputTag('selectedPatTrigger'),
+                                                 objects     = cms.InputTag('slimmedPatTrigger'),
                                                  dR          = cms.double(0.3),
                                                  isAND       = cms.bool(True)
                                                  )
