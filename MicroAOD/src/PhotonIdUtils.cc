@@ -208,7 +208,7 @@ float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
 void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE, bool useNewPhoId )
 {
 
-    // **** bdt 2015 EB ****
+    // **** bdt 2017 EB ****
 
     string mvamethod = "BDT";
 
@@ -228,7 +228,7 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
-    // **** bdt 2015 EE ****
+    // **** bdt 2017 EE ****
 
     phoIdMva_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
@@ -239,14 +239,14 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
     phoIdMva_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
     phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
-    //    phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
+    phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    //phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
     phoIdMva_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
     phoIdMva_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EE_->AddVariable( "esEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-    if(useNewPhoId) phoIdMva_EE_->AddVariable( "esEnergy/SCRawE",   &phoIdMva_esEnovSCRawEn_ );
+    if(useNewPhoId) phoIdMva_EE_->AddVariable( "esEnergyOverRawE",   &phoIdMva_esEnovSCRawEn_ );
     phoIdMva_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 
 }
@@ -273,7 +273,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     //pho iso corr in 2016 for endcap
     phoIdMva_pfPhoIso03Corr_ = photon.pfPhoIso03();
 
-    //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
+    // double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
     double phoIsoPtScalingCoeffVal = 0;
     if( photon.isEB() ) 
         phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
