@@ -58,9 +58,8 @@ if (isMC):
     myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-2_7_7-2_7_7-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180117_115847/0000/myMicroAODOutputFile_10.root")
 
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele35_WPTight_Gsf_v*") #HLT_Ele35_WPTight_Gsf_v* for 2017
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle35noerWPTightGsfTrackIsoFilter") #hltEle27WPTightGsfTrackIsoFilter 
-    #myoptions['TnPHLTTagFilters']      = cms.vstring() #hltEle27WPTightGsfTrackIsoFilter 
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*") #HLT_Ele32_WPTight_Gsf_L1DoubleEG_v* for 2017
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter","hltEGL1SingleEGOrFilter") 
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
     myoptions['GLOBALTAG']             = '94X_mc2017_realistic_v10'
