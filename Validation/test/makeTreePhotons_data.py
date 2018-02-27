@@ -8,7 +8,7 @@ process = cms.Process("tnp")
 myoptions = dict()
 isMC = False
 
-doShowershape = False
+doShowershape = True
 
 myoptions['HLTProcessName']        = "HLT"
 if (doShowershape):
@@ -54,30 +54,24 @@ myoptions['SUBLEADING_PRESELECTION'] = """(abs(leadingPhoton.superCluster.eta) <
 from flashgg.Validation.treeMakerOptionsPhotons_cfi import *
 
 if (isMC):
-    # myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_112132/0000/myMicroAODOutputFile_9.root") #old file not used anymore
-
-    # myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_082421/0000/myMicroAODOutputFile_10.root") #gkole (old file not used anymore)
-
-    # myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-BS2016_BSandPUSummer16_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/170212_125957/0000/myMicroAODOutputFile_1.root") # DY_BS2016 file
 
     myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-2_7_7-2_7_7-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180117_115847/0000/myMicroAODOutputFile_10.root")
 
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele35_WPTight_Gsf_v*") #HLT_Ele35_WPTight_Gsf_v* for 2017
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle35WPTightGsfTrackIsoFilter") #hltEle27WPTightGsfTrackIsoFilter 
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*") #HLT_Ele32_WPTight_Gsf_L1DoubleEG_v* for 2017 #HLT_Ele27_WPTight_Gsf_v* for Moriond17
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter","hltEGL1SingleEGOrFilter") 
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
     myoptions['GLOBALTAG']             = '94X_mc2017_realistic_v10'
     myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 else:
-    #myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_1.root")
-    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-07Aug2017-2_6_1/2_6_1/SingleElectron/LegacyReReco-07Aug2017-2_6_1-2_6_1-v0-Run2016C-07Aug17-v1/171008_210948/0000/myMicroAODOutputFile_10.root")
+    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/SingleElectron/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_113753/0000/myMicroAODOutputFile_1.root")
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle27WPTightGsfTrackIsoFilter")
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle32L1DoubleEGWPTightGsfTrackIsoFilter","hltEGL1SingleEGOrFilter")
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
-    myoptions['GLOBALTAG']             = '80X_dataRun2_2016SeptRepro_v3'
+    myoptions['GLOBALTAG']             = '94X_dataRun2_ReReco_EOY17_v2'
     myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 
 ###################################################################
@@ -238,7 +232,11 @@ if (not myoptions['DEBUG']):
 if (doShowershape):
     process.load("flashgg/Taggers/flashggUpdatedIdMVADiPhotons_cfi")
     process.flashggUpdatedIdMVADiPhotons.DiPhotonTag = cms.InputTag('flashggDiPhotons') # To include shower shape corrections
-
+    process.flashggUpdatedIdMVADiPhotons.reRunRegression = cms.bool(False)
+    process.flashggUpdatedIdMVADiPhotons.doNon5x5transformation = cms.bool(False)
+    process.flashggUpdatedIdMVADiPhotons.do5x5correction = cms.bool(False)
+    process.flashggUpdatedIdMVADiPhotons.doIsoCorrection = cms.bool(False)
+    
     process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
     # process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggDiPhotons')
     process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggUpdatedIdMVADiPhotons')
@@ -257,7 +255,6 @@ if (doShowershape):
         process.p = cms.Path(
             process.flashggUpdatedIdMVADiPhotons +
             process.flashggDiPhotonMVA +
-            #process.sampleInfo + # gkole 2nd Jan
             process.hltFilter +
             process.pho_sequence + 
             process.allTagsAndProbes +
@@ -269,7 +266,6 @@ if (doShowershape):
         process.p = cms.Path(
             process.flashggUpdatedIdMVADiPhotons +
             process.flashggDiPhotonMVA +
-            #process.sampleInfo +
             process.hltFilter +
             process.pho_sequence + 
             process.allTagsAndProbes +
@@ -282,7 +278,6 @@ else:
     if (isMC):
         process.p = cms.Path(
             process.flashggDiPhotonMVA +
-            # process.sampleInfo + # gkole 2nd Jan
             process.hltFilter +
             process.pho_sequence + 
             process.allTagsAndProbes +
@@ -293,7 +288,6 @@ else:
     else:
         process.p = cms.Path(
             process.flashggDiPhotonMVA +
-            #process.sampleInfo +
             process.hltFilter +
             process.pho_sequence + 
             process.allTagsAndProbes +
