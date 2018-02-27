@@ -59,8 +59,8 @@ if (isMC):
 
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
     myoptions['TnPPATHS']              = cms.vstring("HLT_Ele35_WPTight_Gsf_v*") #HLT_Ele35_WPTight_Gsf_v* for 2017
-    #myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle35noerWPTightGsfTrackIsoFilter") #hltEle27WPTightGsfTrackIsoFilter 
-    myoptions['TnPHLTTagFilters']      = cms.vstring() #hltEle27WPTightGsfTrackIsoFilter 
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle35noerWPTightGsfTrackIsoFilter") #hltEle27WPTightGsfTrackIsoFilter 
+    #myoptions['TnPHLTTagFilters']      = cms.vstring() #hltEle27WPTightGsfTrackIsoFilter 
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
     myoptions['GLOBALTAG']             = '94X_mc2017_realistic_v10'
