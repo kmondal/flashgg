@@ -58,6 +58,7 @@ if ${SETUP_REMOTES} ; then
   git remote add ffede https://github.com/ffede/flashgg
   git remote add forthommel https://github.com/forthommel/flashgg
   git remote add fravera https://github.com/fravera/flashgg
+  git remote add gkrintir https://github.com/fravera/flashgg-1
   git remote add GiuseppeFasanella https://github.com/GiuseppeFasanella/flashgg
   git remote add gourangakole https://github.com/gourangakole/flashgg
   git remote add hbakhshi https://github.com/hbakhshi/flashgg
@@ -144,10 +145,9 @@ git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
 echo "Setting up EGM stuff..."
 git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_4_0
 
-# Straightforward update for 8_0_28
-# Temporarily removed from 9_2_0
-#echo "Setting up Higgs Simplified Template Cross Sections..."
-#git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_28
+#EGM IDs
+git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
+git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 
 # Straightforward update for 8_0_28
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
@@ -168,6 +168,9 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
+echo "Simplified template cross section tools"
+git cms-merge-topic -u sethzenz:for-flashgg-rivet-9_4_2
+
 echo "linking classdef for release 94X"
 ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
@@ -176,5 +179,5 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 
 echo
 echo "Done with setup script! You still need to build!"
-# echo "After building, run afterbuild_setup.sh"
+echo "After building, run afterbuild_9_4_X.sh"
 echo
